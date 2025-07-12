@@ -1,0 +1,29 @@
+{
+  "name": "finora",
+  "version": "1.0.0",
+  "description": "this is a billing software, with all necessary amenities",
+  "keywords": [
+    "backend",
+    "server",
+    "bill",
+    "company",
+    "bill",
+    "billing",
+    "operator"
+  ],
+  "license": "ISC",
+  "author": "mr_saxena007",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.3"
+  }
+}
