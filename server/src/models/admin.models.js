@@ -36,6 +36,10 @@ const adminSchema = new mongoose.Schema(
         ref: "Operator",
       },
     ],
+    authority: {
+      type: Boolean,
+      default: false,
+    },
 
     // Images
     image: [
