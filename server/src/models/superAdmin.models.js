@@ -114,10 +114,11 @@ const superAdminSchema = new mongoose.Schema(
         required: true,
       },
     },
-    authority: {
+    mainAuthority: {
       type: Boolean,
       default: true,
     },
+    
   },
   {
     timestamps: true,

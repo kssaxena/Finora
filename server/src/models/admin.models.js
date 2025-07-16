@@ -36,7 +36,7 @@ const adminSchema = new mongoose.Schema(
         ref: "Operator",
       },
     ],
-    authority: {
+    mainAuthority: {
       type: Boolean,
       default: false,
     },
