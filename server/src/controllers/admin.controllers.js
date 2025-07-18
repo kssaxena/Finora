@@ -28,6 +28,7 @@ const registerAdmin = asyncHandler(async (req, res) => {
     email,
     password,
     panNumber,
+    
     // Operator creation not handled at registration
   } = req.body;
 
