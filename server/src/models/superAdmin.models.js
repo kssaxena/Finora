@@ -70,7 +70,12 @@ const superAdminSchema = new mongoose.Schema(
         },
       },
     ],
-
+    products: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
     admin: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -83,7 +88,7 @@ const superAdminSchema = new mongoose.Schema(
         ref: "Operator",
       },
     ],
-    status: {
+    subscriptionStatus: {
       type: String,
       enum: ["Active", "Inactive", "Suspended"],
       default: "Active",
@@ -118,7 +123,6 @@ const superAdminSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    
   },
   {
     timestamps: true,
