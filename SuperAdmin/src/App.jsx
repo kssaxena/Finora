@@ -46,7 +46,7 @@ function App() {
   }, []);
 
   return (
-    <div className="text-black whiteSoftBG">
+    <div className="text-black whiteSoftBG montserrat-font">
       <Routes>
         <Route path="/" element={<Hero />} />
         <Route path="/dashboard" element={<Dashboard />} />
