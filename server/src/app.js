@@ -33,9 +33,9 @@ app.use((req, res, next) => {
 });
 
 // routers
-// import vendorRouter from "./routes/vendor.routes.js";
+import superAdminRouter from "./routes/superAdmin.routes.js";
 
 //vendor routes
-// app.use("/api/v1/vendor", vendorRouter);
+app.use("/api/v1/vendor", superAdminRouter);
 
 export { app };
