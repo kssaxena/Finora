@@ -48,6 +48,7 @@ const LoginForm = ({ startLoading, stopLoading, openRegister }) => {
       ); // Save token to localStorage
       Navigate("/dashboard");
     } catch (err) {
+      alert("Invalid email or password.");
       setError(err.response?.data?.message || "Invalid email or password.");
     } finally {
       stopLoading();
