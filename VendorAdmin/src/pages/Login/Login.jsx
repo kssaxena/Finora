@@ -55,8 +55,8 @@ const LoginForm = ({ startLoading, stopLoading, openRegister }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 backdrop-blur-sm shadow-lg rounded-lg w-96">
-      <h1 className="text-2xl font-bold text-gray-800 lg:mb-6">Login</h1>
+    <div className="max-w-md mx-auto p-6 grayBG shadow-2xl shadow-neutral-400 rounded-lg w-96">
+      <h1 className="text-2xl lg:mb-6">Login</h1>
 
       {error && <div className="text-red-500 mb-4">{error}</div>}
       {success && <div className="text-green-500 mb-4">{success}</div>}
@@ -93,7 +93,7 @@ const LoginForm = ({ startLoading, stopLoading, openRegister }) => {
           </button> */}
         </div>
       </form>
-      <div className="lg:block hidden">
+      {/* <div className="lg:block hidden">
         <p className="text-sm text-gray-500">
           Don't have an account?{" "}
           <span
@@ -103,7 +103,7 @@ const LoginForm = ({ startLoading, stopLoading, openRegister }) => {
             Sign Up
           </span>
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

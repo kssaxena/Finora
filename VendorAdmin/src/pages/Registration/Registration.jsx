@@ -114,15 +114,15 @@ const VendorRegistrationForm = ({ startLoading, stopLoading, onClose }) => {
   };
 
   return (
-    <div className='p-6 lg:h-[80vh] w-full bg-white shadow-lg rounded-lg flex flex-col justify-around'>
-      <h1 className='text-2xl font-bold text-gray-800 mb-4 text-center'>
+    <div className="p-6 lg:h-[80vh] w-full grayBG shadow-lg rounded-lg flex flex-col justify-around">
+      <h1 className="text-2xl font-bold mb-4 text-center">
         Vendor Registration
       </h1>
 
       {/* Progress Bar */}
-      <div className='relative flex items-center justify-between mb-6 '>
+      <div className="relative flex items-center justify-between mb-6 ">
         {steps.map((label, index) => (
-          <div key={index} className='flex flex-col items-center w-full'>
+          <div key={index} className="flex flex-col items-center w-full">
             <div
               className={`h-3 w-full ${
                 index < step ? "bg-green-500" : "bg-gray-300"
@@ -142,8 +142,8 @@ const VendorRegistrationForm = ({ startLoading, stopLoading, onClose }) => {
         ))}
       </div>
 
-      {error && <div className='text-red-500 mb-4'>{error}</div>}
-      {success && <div className='text-green-500 mb-4'>{success}</div>}
+      {error && <div className="text-red-500 mb-4">{error}</div>}
+      {success && <div className="text-green-500 mb-4">{success}</div>}
 
       {/* Step Content */}
       <motion.div
@@ -156,31 +156,31 @@ const VendorRegistrationForm = ({ startLoading, stopLoading, onClose }) => {
         <form
           ref={formRef}
           onSubmit={handleSubmit}
-          className='grid grid-cols-1 md:grid-cols-2 lg:gap-6'
+          className="grid grid-cols-1 md:grid-cols-2 lg:gap-6"
         >
           {step === 0 && (
             <>
               <InputBox
-                LabelName='Business Owner Name'
-                Name='name'
-                Placeholder='Business Owner Name'
+                LabelName="Business Owner Name"
+                Name="name"
+                Placeholder="Business Owner Name"
               />
               <InputBox
-                LabelName='Email'
-                Type='email'
-                Name='email'
-                Placeholder='Business Owner Email'
+                LabelName="Email"
+                Type="email"
+                Name="email"
+                Placeholder="Business Owner Email"
               />
               <InputBox
-                LabelName='Password'
-                Type='password'
-                Name='password'
-                Placeholder='Enter Password'
+                LabelName="Password"
+                Type="password"
+                Name="password"
+                Placeholder="Enter Password"
               />
               <InputBox
-                LabelName='Mobile Number'
-                Name='contactNumber'
-                Placeholder='Enter Mobile Number'
+                LabelName="Mobile Number"
+                Name="contactNumber"
+                Placeholder="Enter Mobile Number"
               />
             </>
           )}
@@ -188,25 +188,25 @@ const VendorRegistrationForm = ({ startLoading, stopLoading, onClose }) => {
           {step === 1 && (
             <>
               <InputBox
-                LabelName='Address'
-                Name='address'
-                Placeholder='Enter Address'
+                LabelName="Address"
+                Name="address"
+                Placeholder="Enter Address"
               />
-              <InputBox LabelName='City' Name='city' Placeholder='Enter City' />
+              <InputBox LabelName="City" Name="city" Placeholder="Enter City" />
               <InputBox
-                LabelName='State'
-                Name='state'
-                Placeholder='Enter State'
-              />
-              <InputBox
-                LabelName='Country'
-                Name='country'
-                Placeholder='Enter Country'
+                LabelName="State"
+                Name="state"
+                Placeholder="Enter State"
               />
               <InputBox
-                LabelName='Postal Code'
-                Name='postalCode'
-                Placeholder='Enter Postal Code'
+                LabelName="Country"
+                Name="country"
+                Placeholder="Enter Country"
+              />
+              <InputBox
+                LabelName="Postal Code"
+                Name="postalCode"
+                Placeholder="Enter Postal Code"
               />
             </>
           )}
@@ -228,24 +228,24 @@ const VendorRegistrationForm = ({ startLoading, stopLoading, onClose }) => {
                 
               /> */}
               <InputBox
-                LabelName='Account Holder Name'
-                Name='accountHolderName'
-                Placeholder='Enter Account Holder Name'
+                LabelName="Account Holder Name"
+                Name="accountHolderName"
+                Placeholder="Enter Account Holder Name"
               />
               <InputBox
-                LabelName='Account Number'
-                Name='accountNumber'
-                Placeholder='Enter Account Number'
+                LabelName="Account Number"
+                Name="accountNumber"
+                Placeholder="Enter Account Number"
               />
               <InputBox
-                LabelName='Bank Name'
-                Name='bankName'
-                Placeholder='Enter Bank Name'
+                LabelName="Bank Name"
+                Name="bankName"
+                Placeholder="Enter Bank Name"
               />
               <InputBox
-                LabelName='IFSC Code'
-                Name='ifscCode'
-                Placeholder='Enter IFSC Code'
+                LabelName="IFSC Code"
+                Name="ifscCode"
+                Placeholder="Enter IFSC Code"
               />
             </>
           )}
@@ -253,45 +253,45 @@ const VendorRegistrationForm = ({ startLoading, stopLoading, onClose }) => {
           {step === 3 && (
             <>
               <InputBox
-                LabelName='Business Name'
-                Name='businessName'
-                Placeholder='Enter Business Name'
+                LabelName="Business Name"
+                Name="businessName"
+                Placeholder="Enter Business Name"
               />
               <InputBox
-                LabelName='Pan Number'
-                Name='panNumber'
-                Placeholder='Enter PAN Number'
+                LabelName="Pan Number"
+                Name="panNumber"
+                Placeholder="Enter PAN Number"
               />
               <InputBox
-                LabelName='GST Number'
-                Name='gstNumber'
-                Placeholder='Enter GST Number'
+                LabelName="GST Number"
+                Name="gstNumber"
+                Placeholder="Enter GST Number"
               />
               <InputBox
-                Type='file'
+                Type="file"
                 Name={"image"}
                 LabelName={"Upload your G.S.T certificate"}
               />
               <InputBox
-                Type='file'
+                Type="file"
                 Name={"canceledCheque"}
                 LabelName={"Cancelled Cheque"}
               />
             </>
           )}
 
-          <div className='md:col-span-2 flex justify-between'>
+          <div className="md:col-span-2 flex justify-between">
             {step > 0 && (
               <Button
-                label='Back'
+                label="Back"
                 onClick={prevStep}
-                className=' hover:bg-red-500'
+                className=" hover:bg-red-500"
               />
             )}
             {step < 3 ? (
-              <Button label='Next' onClick={nextStep} className={"w-1/3"} />
+              <Button label="Next" onClick={nextStep} className={"w-1/3"} />
             ) : (
-              <Button label='Register Vendor' Type='submit' className='w-1/3' />
+              <Button label="Register Vendor" Type="submit" className="w-1/3" />
             )}
           </div>
         </form>
