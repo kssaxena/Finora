@@ -20,7 +20,7 @@ import dayjs from "dayjs";
 
 const Dashboard = ({ startLoading, stopLoading }) => {
   const user = useSelector((store) => store.UserInfo.user);
-  // console.log(user);
+  console.log(user);
   const Dispatch = useDispatch();
   const [selectedMenu, setSelectedMenu] = useState("Home");
   const navigate = useNavigate();
@@ -484,7 +484,7 @@ const Dashboard = ({ startLoading, stopLoading }) => {
   };
 
   return (
-    <div className="flex lg:flex-row flex-col h-screen bg-gray-100">
+    <div className="flex lg:flex-row flex-col h-screen">
       <div className="dashboard w-64 bg-gray-800 text-white lg:flex flex-col hidden ">
         <div className="p-4 text-2xl font-bold bg-purple-600">Dashboard</div>
         <ul className="flex-1">

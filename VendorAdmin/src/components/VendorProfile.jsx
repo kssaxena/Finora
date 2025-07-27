@@ -8,8 +8,12 @@ import { motion } from "framer-motion";
 const VendorProfile = () => {
   const [vendor, setVendor] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const user = useSelector((store) => store.UserInfo.user);
   const [VendorProduct, setVendorProducts] = useState(null);
+  const handleHome = () => {
+    navigate("/dashboard");
+  };
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -26,40 +30,31 @@ const VendorProfile = () => {
       }
     };
 
-    fetchVendor();
-  }, [user]);
-
-  const fetchProducts = async () => {
-    if (user.length > 0) {
-      try {
-        const response = await FetchData(
-          `products/get-all-product-of-vendor/${user?.[0]?._id}`,
-          "get"
-        );
-        if (response.data.success) setVendorProducts(response.data.data);
-      } catch (err) {
-        setError(err.response?.data?.message || "Failed to fetch products.");
+    const fetchProducts = async () => {
+      if (user.length > 0) {
+        try {
+          const response = await FetchData(
+            `products/get-all-product-of-vendor/${user?.[0]?._id}`,
+            "get"
+          );
+          if (response.data.success) setVendorProducts(response.data.data);
+        } catch (err) {
+          setError(err.response?.data?.message || "Failed to fetch products.");
+        }
       }
-    }
-  };
-
-  useEffect(() => {
+    };
+    fetchVendor();
     fetchProducts();
   }, [user]);
 
-  const navigate = useNavigate();
-
-  const handleHome = () => {
-    navigate("/dashboard");
-  };
-
   return (
-    <div className="p-6 rounded-lg shadow-md max-w-5xl mx-auto">
+    <div className="p-6  shadow-md grayBG">
       {/* Profile Header */}
       <div className="flex gap-4 justify-evenly items-center border-b-2 pb-5 lg:hidden">
         <Button label="Home" onClick={handleHome} />
-        {/* <Button label="Edit Profile" /> */}
       </div>
+
+      {/* Vendor Basic Details */}
       <motion.div
         className="flex items-center justify-between border-b pb-4 mb-6"
         initial={{ opacity: 0, y: -20 }}
@@ -68,21 +63,20 @@ const VendorProfile = () => {
       >
         <div className="flex items-center gap-4">
           <img
-            src="/path-to-user-profile-image.jpg" // Replace with the actual path to the user's image
+            src="https://ik.imagekit.io/pz8qfunss/all-vendor/Kshitij-Saxena/GST-Image/1753616714088-Untitled_design.png?updatedAt=1753616716300" // Replace with the actual path to the user's image
             alt="Profile"
             className="w-20 h-20 rounded-full object-cover"
           />
           <div>
             <h1 className="text-2xl font-bold">{user?.[0]?.name}</h1>
-            <p className="text-gray-500">{user?.[0]?.email}</p>
-            <p className="text-gray-500">
+            <p className="">{user?.[0]?.email}</p>
+            <p className="">
               <strong>Contact:</strong> {user?.[0]?.contactNumber}
             </p>
           </div>
         </div>
         <div className="lg:flex gap-4 hidden ">
           <Button label="Home" onClick={handleHome} />
-          {/* <Button label="Edit Profile" onClick={handleHome} /> */}
         </div>
       </motion.div>
 
@@ -143,20 +137,44 @@ const VendorProfile = () => {
         </div>
       </motion.div>
 
-      {/* Ratings Section */}
+      {/* Ratings Section and account section */}
       <motion.div
-        className="border p-4 rounded-lg shadow mb-6"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <h2 className="text-lg font-semibold mb-2">Ratings</h2>
-        <p>
-          <strong>Average Rating:</strong> {user?.[0]?.ratings?.average}/5
-        </p>
-        <p>
-          <strong>Total Reviews:</strong> {user?.[0]?.ratings?.reviewsCount}
-        </p>
+        <motion.div
+          className="border p-4 rounded-lg shadow mb-6 w-full h-[100%]"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <h2 className="text-lg font-semibold mb-2">Ratings</h2>
+          <p>
+            <strong>Average Rating:</strong> {user?.[0]?.ratings?.average}/5
+          </p>
+          <p>
+            <strong>Total Reviews:</strong> {user?.[0]?.ratings?.reviewsCount}
+          </p>
+        </motion.div>
+        <motion.div
+          className="border p-4 rounded-lg shadow w-full h-full"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1 }}
+        >
+          <h2 className="text-lg font-semibold mb-2">Account Status</h2>
+          <p>{user?.[0]?.status}</p>
+          <p>
+            <strong>Created At:</strong>{" "}
+            {new Date(user?.[0]?.createdAt).toLocaleDateString()}
+          </p>
+          <p>
+            <strong>Updated At:</strong>{" "}
+            {new Date(user?.[0]?.updatedAt).toLocaleDateString()}
+          </p>
+        </motion.div>
       </motion.div>
 
       {/* Products Section */}
@@ -178,25 +196,6 @@ const VendorProfile = () => {
         ) : (
           <p>No products listed.</p>
         )}
-      </motion.div>
-
-      {/* Account Status */}
-      <motion.div
-        className="border p-4 rounded-lg shadow"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 1 }}
-      >
-        <h2 className="text-lg font-semibold mb-2">Account Status</h2>
-        <p>{user?.[0]?.status}</p>
-        <p>
-          <strong>Created At:</strong>{" "}
-          {new Date(user?.[0]?.createdAt).toLocaleDateString()}
-        </p>
-        <p>
-          <strong>Updated At:</strong>{" "}
-          {new Date(user?.[0]?.updatedAt).toLocaleDateString()}
-        </p>
       </motion.div>
     </div>
   );

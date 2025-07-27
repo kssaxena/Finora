@@ -14,12 +14,16 @@
     @apply bg-[#FE4343];
   }
 
-  .whiteSoftBG {
-    @apply bg-[#FEFFFF];
+  .SoftBG {
+    @apply bg-[#404040];
   }
 
   .grayBG {
     @apply bg-[#676767];
+  }
+
+  .RedText {
+    @apply text-[#FE4343];
   }
 }
 

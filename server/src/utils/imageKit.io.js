@@ -10,7 +10,7 @@ const imageKit = new ImageKit({
 export const UploadImages = async (imageName, folderDetails, tags = []) => {
   try {
     // Read file asynchronously
-    const data = await fs.readFile(`./public/tmp/productImages/${imageName}`);
+    const data = await fs.readFile(`./public/temp/images/${imageName}`);
 
     // Upload image to ImageKit
     const uploadedImg = await imageKit.upload({
@@ -23,7 +23,7 @@ export const UploadImages = async (imageName, folderDetails, tags = []) => {
     });
 
     // Delete the temporary image after uploading
-    await fs.unlink(`./public/tmp/productImages/${imageName}`);
+    await fs.unlink(`./public/temp/images/${imageName}`);
 
     return uploadedImg;
   } catch (error) {

@@ -166,9 +166,9 @@ const Hero = () => {
         </div>
         {/* <Bar data={barData} /> */}
       </div>
-      <div className="lg:flex justify-center items-center lg:text-4xl text-base lg:absolute relative backdrop-blur lg:h-20 w-full">
+      <div className="lg:flex justify-center items-center lg:text-4xl text-base lg:absolute relative lg:h-20 w-full">
         <h1 className="w-full text-center text-black">
-          Welcome to Finora Billing Hub
+          Welcome to <span className="text-5xl tracking-wider underline underline-offset-8 ">Finora Billing</span> Hub
         </h1>
       </div>
 

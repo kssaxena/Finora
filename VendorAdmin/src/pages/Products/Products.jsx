@@ -308,13 +308,13 @@ const Products = ({ startLoading, stopLoading }) => {
   };
 
   return (
-    <div className="lg:max-w-6xl lg:mx-auto lg:p-4 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-6 mx-4">
+    <div className="lg:max-w-6xl lg:mx-auto lg:p-4 grayBG shadow-lg rounded-lg">
+      <h1 className="text-2xl font-bold mb-4 sm:mb-6 mx-4">
         Your Products
       </h1>
 
-      {error && <div className="text-red-500 mb-4">{error}</div>}
-      {success && <div className="text-green-500 mb-4">{success}</div>}
+      {/* {error && <div className="text-red-500 mb-4">{error}</div>}
+      {success && <div className="text-green-500 mb-4">{success}</div>} */}
 
       <Button
         label="Add New Product"
@@ -325,8 +325,8 @@ const Products = ({ startLoading, stopLoading }) => {
 
       {isModalOpen && (
         <div className="fixed inset-0 flex items-start lg:items-center justify-center  backdrop-blur-xl p-4 h-screen w-screen overflow-auto top-0 left-0">
-          <div className="bg-white flex flex-col rounded-lg shadow-lg w-fit h-fit lg:px-20 lg:py-10 py-4">
-            <h2 className="text-lg font-semibold text-gray-800 lg:mb-4 w-full text-center">
+          <div className="grayBG flex flex-col rounded-lg shadow-lg w-fit h-fit lg:px-20 lg:py-10 py-4">
+            <h2 className="text-lg font-semibold lg:mb-4 w-full text-center">
               Add New Product
             </h2>
             <form

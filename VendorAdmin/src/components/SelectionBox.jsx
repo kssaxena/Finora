@@ -21,7 +21,7 @@ const SelectBox = ({
         name={Name}
         value={Value}
         onChange={onChange}
-        className={`w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 outline-none transition duration-200 ease-in-out hover:shadow-md ${className}`}
+        className={`w-full px-4 py-2 bg-black border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 outline-none transition duration-200 ease-in-out hover:shadow-md ${className} h-full `}
       >
         <option value="" className="text-gray-800" disabled selected>
           {Placeholder}

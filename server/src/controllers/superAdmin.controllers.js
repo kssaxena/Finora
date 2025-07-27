@@ -53,8 +53,6 @@ const registerVendor = asyncHandler(async (req, res, next) => {
     return next(new ApiError(400, "A vendor with this email already exists"));
   }
 
-  // console.log(req.files);
-
   const imageFile = req.files["image"][0];
   const canceledChequeFile = req.files["canceledCheque"]?.[0];
 
@@ -113,7 +111,7 @@ const registerVendor = asyncHandler(async (req, res, next) => {
       bankName,
       ifscCode,
     },
-    image: {
+    imageGST: {
       url: image.url,
       fileId: image.fileId,
       altText: name,
