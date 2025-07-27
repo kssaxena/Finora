@@ -3,7 +3,7 @@ const SelectBox = ({
   Name,
   Value,
   Placeholder,
-  Options = [], // Ensure it's always an array
+  Options = [],
   onChange,
   className = "",
   className2 = "",
@@ -23,8 +23,8 @@ const SelectBox = ({
         onChange={onChange}
         className={`w-full px-4 py-2 bg-black border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 outline-none transition duration-200 ease-in-out hover:shadow-md ${className} h-full `}
       >
-        <option value="" className="text-gray-800" disabled selected>
-          {Placeholder}
+        <option value="" className="text-gray-800" disabled>
+          {Placeholder || "Select an option"}
         </option>
         {Options.map((option) => (
           <option

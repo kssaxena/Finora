@@ -8,6 +8,21 @@ const subcategorySchema = new Schema(
       ref: "Category",
       required: true,
     },
+    image: {
+      fileId: {
+        type: String, // ImageKit file ID
+        default: null,
+        required: true, // The unique identifier for the uploaded image file
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+      altText: {
+        type: String,
+        default: "",
+      },
+    },
   },
   { timestamps: true }
 );

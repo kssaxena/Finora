@@ -15,6 +15,7 @@ const categorySchema = new Schema(
       default: "under-review",
       enum: ["Verified", "Under-review"],
     },
+    
   },
   { timestamps: true }
 );

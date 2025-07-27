@@ -20,7 +20,7 @@ import dayjs from "dayjs";
 
 const Dashboard = ({ startLoading, stopLoading }) => {
   const user = useSelector((store) => store.UserInfo.user);
-  console.log(user);
+  // console.log(user);
   const Dispatch = useDispatch();
   const [selectedMenu, setSelectedMenu] = useState("Home");
   const navigate = useNavigate();
@@ -120,7 +120,7 @@ const Dashboard = ({ startLoading, stopLoading }) => {
             `orders/get-vendor-orders/${user?.[0]?._id}`,
             "get"
           );
-          console.log(response);
+          // console.log(response);
           if (response.data.success) {
             setAllOrders(response.data.orders);
           } else {
@@ -465,7 +465,7 @@ const Dashboard = ({ startLoading, stopLoading }) => {
                       localStorage.removeItem("RefreshToken");
                       alert("You are logged out! Please log in.");
                       setTimeout(() => navigate("/login"), 100);
-                      console.log(localStorage.getItem("RefreshToken"));
+                      // console.log(localStorage.getItem("RefreshToken"));
                     }}
                   />
                 </div>

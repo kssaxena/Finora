@@ -34,8 +34,12 @@ app.use((req, res, next) => {
 
 // routers
 import superAdminRouter from "./routes/superAdmin.routes.js";
+import categorySubcategoryRouter from "./routes/category-subcategory.routes.js";
 
 //vendor routes
 app.use("/api/v1/vendor", superAdminRouter);
+
+//category subcategory
+app.use("/api/v1/category-subcategory", categorySubcategoryRouter);
 
 export { app };

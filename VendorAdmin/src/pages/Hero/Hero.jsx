@@ -146,7 +146,7 @@ const Hero = () => {
 
   const [showPopup, setShowPopup] = useState(false);
   return (
-    <div className="">
+    <div className="bg-[#FEFFFF]">
       <div className="absolute h-screen w-screen object-fill overflow-hidden hidden lg:block blur-sm ">
         <div className="flex justify-centre items-centre">
           <div className="w-1/2">
@@ -168,7 +168,11 @@ const Hero = () => {
       </div>
       <div className="lg:flex justify-center items-center lg:text-4xl text-base lg:absolute relative lg:h-20 w-full">
         <h1 className="w-full text-center text-black">
-          Welcome to <span className="text-5xl tracking-wider underline underline-offset-8 ">Finora Billing</span> Hub
+          Welcome to{" "}
+          <span className="text-5xl tracking-wider underline underline-offset-8 ">
+            Finora Billing
+          </span>{" "}
+          Hub
         </h1>
       </div>
 
