@@ -298,14 +298,14 @@ const getAllProducts = asyncHandler(async (req, res) => {
   }
 });
 
-const getProductsOfVendor = asyncHandler(async (req, res) => {
+const getProductsOfSuperAdmin = asyncHandler(async (req, res) => {
   // console.log("controller reached");
-  const { vendorId } = req.params;
+  const { superAdmin } = req.params;
 
-  if (!vendorId) throw new ApiError(400, "Vendor ID is required");
+  if (!superAdmin) throw new ApiError(400, "Vendor ID is required");
 
   // Fetch the products of the given vendor ID
-  const vendor = await VendorUser.findById(vendorId).populate({
+  const vendor = await SuperAdmin.findById(superAdmin).populate({
     path: "products",
     populate: [
       { path: "category" }, // Populate category inside products
@@ -590,7 +590,7 @@ export {
   editProduct,
   AddProductImages,
   deleteProduct,
-  getProductsOfVendor,
+  getProductsOfSuperAdmin,
   getProductByCategory,
   addStockQuantity,
   removeStockQuantity,

@@ -59,16 +59,16 @@ const productSchema = new mongoose.Schema(
       required: true,
       unique: true, // Stock Keeping Unit for unique product identification
     },
-    admin: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Admin", // Reference to the admin who registered the product
-      required: true,
-    },
-    // superAdmin: {
+    // admin: {
     //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "VendorUser", // Reference to the super admin who registered the product
+    //   ref: "Admin", // Reference to the admin who registered the product
     //   required: true,
     // },
+    superAdmin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "VendorUser", // Reference to the super admin who registered the product
+      required: true,
+    },
     images: [
       {
         fileId: {

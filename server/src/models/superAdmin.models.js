@@ -4,105 +4,81 @@ import Jwt from "jsonwebtoken";
 
 const superAdminSchema = new mongoose.Schema(
   {
-    // Personal Details
-    personal: {
-      name: {
-        type: String,
-        required: true,
-      },
-      contact: {
-        type: String,
-        required: true,
-        unique: true,
-      },
-      email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-      },
-      password: {
-        type: String,
-        required: true,
-      },
-      panNumber: {
-        type: String,
-        required: true,
-      },
-    },
-
-    // Business Details
-    business: [
-      {
-        businessName: {
-          type: String,
-          required: true,
-        },
-        businessAddress: {
-          type: String,
-          required: true,
-        },
-        businessEmail: {
-          type: String,
-          required: true,
-        },
-        businessCity: {
-          type: String,
-          required: true,
-        },
-        businessState: {
-          type: String,
-          required: true,
-        },
-        businessContact: {
-          type: String,
-          required: true,
-        },
-        gstNumber: {
-          type: String,
-          required: true,
-          unique: true,
-        },
-        businessPinCode: {
-          type: String,
-          required: true,
-          // unique: true,
-        },
-      },
-    ],
-
-    admin: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Admin",
-      },
-    ],
-    operator: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Operator",
-      },
-    ],
-    status: {
+    name: {
       type: String,
-      enum: ["Active", "Inactive", "Suspended"],
-      default: "Active",
+      required: true,
+      trim: true,
     },
-
-    // Images
-    image: [
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+    },
+    contactNumber: {
+      type: String,
+      required: true,
+    },
+    panNumber: {
+      type: String,
+      required: true,
+    },
+    location: {
+      address: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        required: true,
+      },
+      country: {
+        type: String,
+        required: true,
+      },
+      postalCode: {
+        type: String,
+        required: true,
+      },
+    },
+    ratings: {
+      average: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 5,
+      },
+      reviewsCount: {
+        type: Number,
+        default: 0,
+      },
+    },
+    products: [
       {
-        url: {
-          type: String,
-        },
-        fileId: {
-          type: String,
-        },
-        filePath: {
-          type: String,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
       },
     ],
+
+    category: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
+
+    subcategory: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Subcategory",
+      },
+    ],
+
     canceledCheque: {
       fileId: {
         type: String, //  ImageKit file ID
@@ -114,15 +90,75 @@ const superAdminSchema = new mongoose.Schema(
         required: true,
       },
     },
-    mainAuthority: {
-      type: Boolean,
-      default: true,
+
+    // For gst certificate
+    imageGST: {
+      fileId: {
+        type: String, //  ImageKit file ID
+        default: null,
+        required: true, // The unique identifier for the uploaded image file
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+      altText: {
+        type: String,
+        default: "",
+      },
     },
-    
+
+    businessDetails: {
+      gstNumber: {
+        type: String,
+        required: true,
+        unique: true,
+      },
+      businessName: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      registrationDate: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+    bankDetails: {
+      accountHolderName: {
+        type: String,
+        required: true,
+      },
+      accountNumber: {
+        type: String,
+        required: true,
+      },
+      bankName: {
+        type: String,
+        required: true,
+      },
+      ifscCode: {
+        type: String,
+        required: true,
+      },
+    },
+    status: {
+      type: String,
+      enum: ["active", "inactive", "suspended"],
+      default: "active",
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    password: {
+      type: String,
+      required: true,
+      // minlength: 8,
+    },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 // Password Hashing Middleware
