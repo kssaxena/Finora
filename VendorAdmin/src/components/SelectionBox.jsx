@@ -9,10 +9,10 @@ const SelectBox = ({
   className2 = "",
 }) => {
   return (
-    <div className={`mb-4 py-4 ${className2}`}>
+    <div className={` py-4 ${className2} w-full`}>
       <label
         htmlFor={Name}
-        className="block text-sm font-medium text-gray-700 mb-2"
+        className="block text-sm font-medium mb-2"
       >
         {LabelName}
       </label>

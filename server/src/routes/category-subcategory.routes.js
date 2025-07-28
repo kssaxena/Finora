@@ -5,6 +5,7 @@ import {
   GetSubcategoriesByCategory,
   AddNewSubcategoryToCategory,
   DeleteSubcategory,
+  getAllCategories,
 } from "../controllers/category.controllers.js";
 import {
   VerifyAdminUser,
@@ -21,6 +22,10 @@ router
 router
   .route("/get-category-subcategory/:userId")
   .get(VerifySuperAdminUser, getSuperAdminCategoryById);
+
+router
+  .route("/get-all-category-and-subcategories")
+  .get(VerifySuperAdminUser, getAllCategories);
 
 router
   .route("/get-subcategory/:categoryId")

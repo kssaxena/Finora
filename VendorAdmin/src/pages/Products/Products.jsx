@@ -166,22 +166,15 @@ const Products = ({ startLoading, stopLoading }) => {
       try {
         startLoading();
         const response = await FetchData(
-          "categories/get-all-category-and-subcategories",
+          "category-subcategory/get-all-category-and-subcategories",
           "get"
         );
-        // console.log(response);
 
-        // Ensure categories exist before setting state
-        const categories = response.data?.data?.categories || [];
-        setCategories(categories);
-
-        // Extract all subcategories from each category
-        const allSubcategories = categories.flatMap(
-          (category) => category.subcategories || []
-        );
-        setSubcategories(allSubcategories);
+        // Extract categories
+        const fetchedCategories = response.data?.data?.categories || [];
+        setCategories(fetchedCategories);
       } catch (error) {
-        console.log("Error getting all main subcategories", error);
+        console.error("Error fetching categories", error);
       } finally {
         stopLoading();
       }
@@ -201,6 +194,17 @@ const Products = ({ startLoading, stopLoading }) => {
     getAllMainSubcategories();
     GetAllBrands();
   }, []);
+
+  const handleCategoryChange = (e) => {
+    const selectedCatId = e.target.value;
+    setSelectedCategory(selectedCatId);
+
+    // Find selected category object
+    const selectedCat = categories.find((cat) => cat._id === selectedCatId);
+
+    // Set subcategories for that category
+    setSubcategories(selectedCat?.subcategory || []);
+  };
 
   const ImageUpdationForm = ({ onClose, imagesRequired }) => {
     const [images, setImages] = useState([]);
@@ -309,9 +313,7 @@ const Products = ({ startLoading, stopLoading }) => {
 
   return (
     <div className="lg:max-w-6xl lg:mx-auto lg:p-4 grayBG shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-4 sm:mb-6 mx-4">
-        Your Products
-      </h1>
+      <h1 className="text-2xl font-bold mb-4 sm:mb-6 mx-4">Your Products</h1>
 
       {/* {error && <div className="text-red-500 mb-4">{error}</div>}
       {success && <div className="text-green-500 mb-4">{success}</div>} */}
@@ -347,7 +349,7 @@ const Products = ({ startLoading, stopLoading }) => {
                     className2="w-full"
                     LabelName="Brand"
                     Name="brand"
-                    Placeholder="Select main category"
+                    Placeholder="Select Brand"
                     Options={brands?.map((brand) => ({
                       label: brand.title,
                       value: brand._id, // Correctly linking ID for selection
@@ -358,28 +360,26 @@ const Products = ({ startLoading, stopLoading }) => {
                     className2="w-full"
                     LabelName="Main Category"
                     Name="category"
-                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    Value={selectedCategory}
+                    onChange={handleCategoryChange}
                     Placeholder="Select main category"
-                    Options={categories?.map((cat) => ({
+                    Options={categories.map((cat) => ({
                       label: cat.title,
-                      value: cat._id, // Correctly linking ID for selection
+                      value: cat._id,
                     }))}
                   />
 
-                  {subcategories.length > 0 && (
+                  {/* Subcategory SelectBox */}
+                  {selectedCategory && (
                     <SelectBox
                       className2="w-full"
                       LabelName="Subcategory"
                       Name="subcategory"
                       Placeholder="Select subcategory"
-                      Options={subcategories
-                        .filter(
-                          (subs) => subs.category._id === selectedCategory
-                        )
-                        .map((sub) => ({
-                          label: sub.title,
-                          value: sub._id, // Ensure unique key
-                        }))}
+                      Options={subcategories.map((sub) => ({
+                        label: sub.title,
+                        value: sub._id,
+                      }))}
                     />
                   )}
                 </div>
