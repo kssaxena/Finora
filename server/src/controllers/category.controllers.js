@@ -238,10 +238,30 @@ const DeleteSubcategory = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Subcategory deleted successfully"));
 });
 
+const getAllCategories = asyncHandler(async (req, res) => {
+  // Fetch all categories and populate their subcategories
+  const categories = await Category.find().populate("subcategory");
+
+  if (!categories || categories.length === 0) {
+    throw new ApiError(404, "No categories found!");
+  }
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { categories },
+        "Fetched all categories successfully"
+      )
+    );
+});
+
 export {
   AddCategory,
   getSuperAdminCategoryById,
   GetSubcategoriesByCategory,
   AddNewSubcategoryToCategory,
   DeleteSubcategory,
+  getAllCategories,
 };
