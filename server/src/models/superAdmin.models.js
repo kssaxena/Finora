@@ -67,15 +67,22 @@ const superAdminSchema = new mongoose.Schema(
 
     category: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
-      },
-    ],
-
-    subcategory: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Subcategory",
+        title: { type: String, required: true },
+        status: {
+          type: String,
+          default: "Under-review",
+          enum: ["Verified", "Under-review"],
+        },
+        subcategory: [
+          {
+            title: { type: String, required: true },
+            image: {
+              fileId: { type: String, required: true },
+              url: { type: String, required: true },
+              altText: { type: String, default: "" },
+            },
+          },
+        ],
       },
     ],
 

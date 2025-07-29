@@ -11,64 +11,66 @@ const AddCategory = asyncHandler(async (req, res) => {
   const { userId } = req.params;
 
   if (!category || !subcategory) {
-    throw new ApiError(404, "Category or subcategory is required!");
+    throw new ApiError(400, "Category and subcategory are required!");
   }
 
   if (typeof category !== "string" || typeof subcategory !== "string") {
     throw new ApiError(400, "Invalid input type for category or subcategory!");
   }
 
-  const existingCategory = await Category.findOne({ title: category });
-  if (existingCategory) {
-    throw new ApiError(400, "Category already exists!");
-  }
-
+  // ✅ Find SuperAdmin
   const superAdmin = await SuperAdmin.findById(userId);
-  if (!superAdmin) {
-    throw new ApiError(404, "SuperAdmin not found!");
-  }
+  if (!superAdmin) throw new ApiError(404, "SuperAdmin not found!");
 
-  // Create new category
-  const newCategory = await Category.create({
-    title: category,
-    status: "Verified",
+  // ✅ Check if Category Already Exists
+  const existingCategory = superAdmin.category.find(
+    (cat) => cat.title.toLowerCase() === category.toLowerCase()
+  );
+
+  // ✅ Upload Subcategory Image
+  if (!req.file) throw new ApiError(400, "Image file not found!");
+
+  const image = await UploadImages(req.file.filename, {
+    folderStructure: `images-Of-Subcategory/${subcategory.replace(
+      /\s+/g,
+      "-"
+    )}`,
   });
 
-  // Check for image
-  const imageFile = req.file;
-  if (!imageFile) throw new ApiError(404, "Image file not found!");
+  if (!image) throw new ApiError(500, "Image upload failed!");
 
-  const image = await UploadImages(imageFile.filename, {
-    folderStructure: `images-Of-Subcategory/${subcategory
-      .split(" ")
-      .join("-")}`,
-  });
-
-  if (!image) {
-    throw new ApiError(500, "Failed to upload image! Please try again");
-  }
-
-  // Create subcategory
-  const newSubcategory = await Subcategory.create({
-    title: subcategory,
-    category: newCategory._id,
-    image: { url: image.url, alt: subcategory, fileId: image.fileId },
-  });
-
-  if (!newCategory || !newSubcategory) {
-    throw new ApiError(
-      500,
-      "Failed to create category or subcategory! Please try again"
+  if (existingCategory) {
+    // ✅ Check if subcategory already exists
+    const existingSub = existingCategory.subcategory.find(
+      (sub) => sub.title.toLowerCase() === subcategory.toLowerCase()
     );
+
+    if (existingSub) {
+      throw new ApiError(
+        400,
+        "Subcategory already exists under this category!"
+      );
+    }
+
+    // ✅ Add new Subcategory to Existing Category
+    existingCategory.subcategory.push({
+      title: subcategory,
+      image: { url: image.url, fileId: image.fileId, altText: subcategory },
+    });
+  } else {
+    // ✅ Add New Category with Subcategory
+    superAdmin.category.push({
+      title: category,
+      status: "Verified",
+      subcategory: [
+        {
+          title: subcategory,
+          image: { url: image.url, fileId: image.fileId, altText: subcategory },
+        },
+      ],
+    });
   }
 
-  // Push subcategory to category
-  newCategory.subcategory.push(newSubcategory._id);
-  await newCategory.save();
-
-  // Push category & subcategory to SuperAdmin
-  superAdmin.category.push(newCategory._id);
-  superAdmin.subcategory.push(newSubcategory._id);
   await superAdmin.save();
 
   res
@@ -76,8 +78,8 @@ const AddCategory = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         201,
-        { category: newCategory, subcategory: newSubcategory },
-        "Successfully created a new category and updated SuperAdmin"
+        superAdmin.category,
+        "Category & Subcategory added successfully!"
       )
     );
 });
@@ -85,17 +87,8 @@ const AddCategory = asyncHandler(async (req, res) => {
 const getSuperAdminCategoryById = asyncHandler(async (req, res) => {
   const { userId } = req.params;
 
-  // Find super admin and populate categories and subcategories
-  const superAdmin = await SuperAdmin.findById(userId)
-    .populate({
-      path: "category",
-      model: "Category",
-      populate: {
-        path: "subcategory",
-        model: "Subcategory",
-      },
-    })
-    .populate("subcategory");
+  // ✅ Just find SuperAdmin, no populate needed
+  const superAdmin = await SuperAdmin.findById(userId);
 
   if (!superAdmin) {
     throw new ApiError(404, "SuperAdmin not found!");
@@ -105,8 +98,7 @@ const getSuperAdminCategoryById = asyncHandler(async (req, res) => {
     new ApiResponse(
       200,
       {
-        categories: superAdmin.category, // Array of categories with populated subcategories
-        subcategories: superAdmin.subcategory, // Direct subcategories array
+        categories: superAdmin.category, // Already contains subcategories
       },
       "Fetched categories and subcategories successfully"
     )
@@ -114,10 +106,18 @@ const getSuperAdminCategoryById = asyncHandler(async (req, res) => {
 });
 
 const GetSubcategoriesByCategory = asyncHandler(async (req, res) => {
-  const { categoryId } = req.params;
+  const { userId, categoryId } = req.params;
 
-  // Find the category and populate its subcategories
-  const category = await Category.findById(categoryId).populate("subcategory");
+  // ✅ Find SuperAdmin
+  const superAdmin = await SuperAdmin.findById(userId);
+  if (!superAdmin) {
+    throw new ApiError(404, "SuperAdmin not found!");
+  }
+
+  // ✅ Find category inside SuperAdmin
+  const category = superAdmin.category.find(
+    (cat) => cat._id.toString() === categoryId
+  );
 
   if (!category) {
     throw new ApiError(404, "Category not found!");
@@ -128,7 +128,7 @@ const GetSubcategoriesByCategory = asyncHandler(async (req, res) => {
       200,
       {
         category: { _id: category._id, title: category.title },
-        subcategories: category.subcategory,
+        subcategories: category.subcategory, // ✅ Directly from embedded array
       },
       "Fetched subcategories successfully"
     )
@@ -137,53 +137,47 @@ const GetSubcategoriesByCategory = asyncHandler(async (req, res) => {
 
 const AddNewSubcategoryToCategory = asyncHandler(async (req, res) => {
   const { userId } = req.params;
-  const { title, categoryId } = req.body; // userId (superAdmin) required to update their subcategory array
-  console.log(title, categoryId, userId);
+  const { title, categoryId } = req.body;
 
   if (!title) {
     throw new ApiError(400, "Subcategory title is required!");
   }
 
-  // Find category
-  const category = await Category.findById(categoryId);
-  if (!category) {
-    throw new ApiError(404, "Category not found!");
-  }
-
-  // Find super admin
+  // ✅ Find SuperAdmin
   const superAdmin = await SuperAdmin.findById(userId);
   if (!superAdmin) {
     throw new ApiError(404, "SuperAdmin not found!");
   }
 
-  // Check for image file
-  const imageFile = req.file;
-  if (!imageFile) {
+  // ✅ Find Category inside SuperAdmin
+  const category = superAdmin.category.find(
+    (cat) => cat._id.toString() === categoryId
+  );
+
+  if (!category) {
+    throw new ApiError(404, "Category not found!");
+  }
+
+  // ✅ Check for image file
+  if (!req.file) {
     throw new ApiError(400, "Image file is required!");
   }
 
-  // Upload image
-  const image = await UploadImages(imageFile.filename, {
-    folderStructure: `images-Of-Subcategory/${title.split(" ").join("-")}`,
+  // ✅ Upload Image
+  const image = await UploadImages(req.file.filename, {
+    folderStructure: `images-Of-Subcategory/${title.replace(/\s+/g, "-")}`,
   });
 
   if (!image) {
     throw new ApiError(500, "Image upload failed!");
   }
 
-  // Create new subcategory
-  const newSubcategory = await Subcategory.create({
+  // ✅ Add Subcategory inside the Category
+  category.subcategory.push({
     title,
-    category: category._id,
-    image: { url: image.url, alt: title, fileId: image.fileId },
+    image: { url: image.url, fileId: image.fileId, altText: title },
   });
 
-  // Add subcategory to category
-  category.subcategory.push(newSubcategory._id);
-  await category.save();
-
-  // Add subcategory to super admin
-  superAdmin.subcategory.push(newSubcategory._id);
   await superAdmin.save();
 
   res
@@ -191,8 +185,8 @@ const AddNewSubcategoryToCategory = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         201,
-        { subcategory: newSubcategory },
-        "Subcategory added successfully"
+        { categoryId: category._id, subcategories: category.subcategory },
+        "Subcategory added successfully!"
       )
     );
 });

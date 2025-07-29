@@ -12,6 +12,7 @@ import { Trash } from "lucide-react";
 
 const Categories = ({ startLoading, stopLoading }) => {
   const user = useSelector((store) => store.UserInfo.user);
+  console.log(user);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [newCategory, setNewCategory] = useState({
@@ -49,6 +50,7 @@ const Categories = ({ startLoading, stopLoading }) => {
           `category-subcategory/get-category-subcategory/${user?.[0]?._id}`,
           "get"
         );
+        console.log(response);
 
         // Ensure categories exist before setting state
         setCategories(response.data?.data?.categories || []);
@@ -67,7 +69,7 @@ const Categories = ({ startLoading, stopLoading }) => {
     try {
       startLoading();
       const response = await FetchData(
-        `category-subcategory/get-subcategory/${categoryId}`,
+        `category-subcategory/get-subcategory/${categoryId}/${user?.[0]?._id}`,
         "get"
       );
       console.log(response);
@@ -96,7 +98,7 @@ const Categories = ({ startLoading, stopLoading }) => {
         formData,
         true
       );
-      // console.log(response);
+      console.log(response);
       setHandlePopup((prev) => ({
         ...prev,
         addCategoryPopup: false,
@@ -140,6 +142,7 @@ const Categories = ({ startLoading, stopLoading }) => {
   };
   // Handle edit category
   const handleEditCategory = ({ categoryId }) => {
+    // console.log("Edit Category ID:", categoryId);
     getSubcategoryById({ categoryId });
     setHandlePopup((prev) => {
       return { ...prev, editCategoryPopup: true };

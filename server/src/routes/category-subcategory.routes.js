@@ -28,7 +28,7 @@ router
   .get(VerifySuperAdminUser, getAllCategories);
 
 router
-  .route("/get-subcategory/:categoryId")
+  .route("/get-subcategory/:categoryId/:userId")
   .get(VerifySuperAdminUser, GetSubcategoriesByCategory);
 
 router

@@ -180,7 +180,7 @@ const loginVendor = asyncHandler(async (req, res, next) => {
   // Return success response
   const response = new ApiResponse(200, {
     vendor: {
-      id: vendor._id,
+      _id: vendor._id,
       name: vendor.name,
       email: vendor.email,
       contactNumber: vendor.contactNumber,
@@ -236,7 +236,7 @@ const regenerateRefreshToken = asyncHandler(async (req, res) => {
   const user = await VendorUser.findById(DecodedToken._id).select(
     "-password -refreshToken"
   );
-  // console.log(user);
+  console.log("User", user);
 
   if (!user) throw new ApiError(400, "Invalid Token");
 

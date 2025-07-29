@@ -12,10 +12,9 @@ const categorySchema = new Schema(
     status: {
       type: String,
       required: true,
-      default: "under-review",
+      default: "Under-review",
       enum: ["Verified", "Under-review"],
     },
-    
   },
   { timestamps: true }
 );

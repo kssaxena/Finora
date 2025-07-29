@@ -20,7 +20,7 @@ import dayjs from "dayjs";
 
 const Dashboard = ({ startLoading, stopLoading }) => {
   const user = useSelector((store) => store.UserInfo.user);
-  // console.log(user);
+  console.log(user);
   const Dispatch = useDispatch();
   const [selectedMenu, setSelectedMenu] = useState("Home");
   const navigate = useNavigate();
