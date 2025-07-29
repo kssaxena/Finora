@@ -412,6 +412,6 @@ export {
   getUnverifiedVendors,
   getCurrentVendor,
   VendorBan,
-  acceptVendor,
   rejectVendor,
+  acceptVendor,
 };
